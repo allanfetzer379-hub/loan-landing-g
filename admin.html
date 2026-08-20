@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>客戶名單後台 | 文才投資有限公司</title>
+  <title>客戶名單後台 | 直辰投資股份有限公司</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     if (!window.supabase) {
@@ -151,7 +151,7 @@
 </head>
 <body>
   <header>
-    <h1>文才投資有限公司交單系統 <span class="header-sub">客戶申請管理</span></h1>
+    <h1>直辰投資股份有限公司交單系統 <span class="header-sub">客戶申請管理</span></h1>
     <div id="user-bar" class="hidden">
       <div class="header-nav">
         <button id="nav-leads" class="active" onclick="showAdminView('leads')">申請列表</button>
@@ -355,7 +355,12 @@
         openDetails = function (id) {
           legacyOpenDetails(id);
           var detailBody = document.getElementById('detail-body');
-          if (!detailBody || detailBody.textContent.indexOf('FORM_V2_NINE_FIELDS') === -1) return;
+          if (!detailBody) return;
+          detailBody.querySelectorAll('.detail-item').forEach(function (row) {
+            var itemLabel = row.querySelector('label');
+            if (itemLabel && /來源網址|来源网址/.test(itemLabel.textContent.trim())) row.remove();
+          });
+          if (detailBody.textContent.indexOf('FORM_V2_NINE_FIELDS') === -1) return;
           var rows = detailBody.querySelectorAll('.detail-grid > *');
           rows.forEach(function (row) {
             var label = row.querySelector('span');

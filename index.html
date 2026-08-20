@@ -3,31 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>快速貸款試算｜文才投資有限公司</title>
+  <title>快速貸款試算｜直辰投資股份有限公司</title>
   <meta name="description" content="線上完成貸款需求試算，最高可評估 NT$1,000,000，填寫資料後由專員協助確認方案。">
   <script src="page-config.js?v=20260815-pageview"></script>
   <style>
     :root{
-      --navy:#071a36;
-      --navy2:#0c274d;
-      --blue:#0b78d0;
-      --gold:#e8a635;
-      --gold2:#f0b848;
-      --ink:#102033;
-      --muted:#6a7280;
-      --line:#e0e6ee;
-      --soft:#f3f6fa;
+      --navy:#103d47;
+      --navy2:#165966;
+      --blue:#0f766e;
+      --gold:#f97316;
+      --gold2:#fb923c;
+      --ink:#15333a;
+      --muted:#64777b;
+      --line:#d8e6e7;
+      --soft:#eef6f6;
       --white:#fff;
       --green:#10b981;
       --danger:#dc2626;
-      --shadow:0 16px 40px rgba(12,39,77,.14);
+      --shadow:0 16px 38px rgba(16,61,71,.13);
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
       font-family:"Microsoft JhengHei","PingFang TC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:#eef2f6;
+      background:#e8f1f2;
       color:var(--ink);
       -webkit-font-smoothing:antialiased;
     }
@@ -37,9 +37,9 @@
       width:min(430px,100%);
       min-height:100dvh;
       margin:0 auto;
-      background:#f7f9fc;
+      background:#f7fbfb;
       position:relative;
-      box-shadow:0 0 0 1px rgba(15,23,42,.06);
+      box-shadow:0 0 0 1px rgba(16,61,71,.08);
       overflow:hidden;
     }
     .top{
@@ -50,90 +50,92 @@
       position:sticky;
       top:0;
       z-index:20;
-      box-shadow:0 6px 20px rgba(7,26,54,.2);
+      box-shadow:0 7px 22px rgba(16,61,71,.22);
+      border-bottom:3px solid #22a699;
     }
     .brand-row{display:flex;align-items:center;justify-content:space-between;gap:14px}
     .brand{display:flex;align-items:center;gap:10px;min-width:0}
     .back-dot{
       width:28px;height:28px;border-radius:50%;
       display:grid;place-items:center;
-      background:rgba(255,255,255,.09);
-      color:#dbeafe;
+      background:rgba(255,255,255,.12);
+      color:#dff8f5;
       font-size:20px;
       flex:none;
     }
     .brand-name{font-weight:900;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .status{display:flex;align-items:center;gap:6px;font-size:11px;color:#c7d2e5;white-space:nowrap}
+    .status{display:flex;align-items:center;gap:6px;font-size:11px;color:#d2e8e8;white-space:nowrap}
     .status:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(16,185,129,.16)}
-    .sub-head{margin:6px 0 0 38px;color:#b9c6d8;font-size:12px}
+    .sub-head{margin:6px 0 0 38px;color:#c4dddd;font-size:12px}
     .screen{display:none;min-height:calc(100dvh - 70px)}
     .screen.active{display:block}
     .estimate{padding:14px 10px 22px}
     .card{
       background:var(--white);
-      border:1px solid #e5ebf2;
-      border-radius:18px;
-      box-shadow:0 10px 26px rgba(13,27,54,.07);
+      border:1px solid #dce9ea;
+      border-radius:12px;
+      box-shadow:0 9px 24px rgba(16,61,71,.07);
       padding:18px;
       margin-bottom:12px;
     }
     .calc-card{padding:20px 18px}
     .row-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-    .label{font-size:15px;font-weight:900;color:#102033}
+    .label{font-size:15px;font-weight:900;color:#15333a}
     .amount-display{font-size:28px;font-weight:950;color:var(--navy);letter-spacing:.2px}
     .range{width:100%;accent-color:var(--blue)}
     .range-scale{display:flex;justify-content:space-between;color:#98a2b3;font-size:12px;margin-top:8px}
-    .section-label{font-size:15px;font-weight:950;margin:0 0 12px;color:#142238}
+    .section-label{font-size:15px;font-weight:950;margin:0 0 12px;color:#15333a}
     .option-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
     .purpose-grid{grid-template-columns:repeat(3,1fr)}
     .option{
-      border:0;
+      border:1px solid #d3e2e3;
       min-height:44px;
-      border-radius:16px;
-      background:#edf1f7;
-      color:#5d6675;
+      border-radius:9px;
+      background:#f8fbfb;
+      color:#536a6f;
       font-weight:900;
       font-size:14px;
       transition:.16s transform,.16s background,.16s color,.16s box-shadow;
     }
-    .purpose-grid .option{min-height:38px;border-radius:14px;font-size:13px}
+    .purpose-grid .option{min-height:38px;border-radius:9px;font-size:13px}
     .option.selected{
       background:var(--navy);
       color:#fff;
-      box-shadow:0 9px 18px rgba(7,26,54,.18);
+      border-color:var(--navy);
+      box-shadow:0 7px 16px rgba(16,61,71,.18);
     }
     .option:active,.primary-btn:active,.line-btn:active,.next-btn:active,.back-btn:active{transform:scale(.98)}
     .result-card{
-      background:linear-gradient(145deg,#061733,#092852);
+      background:linear-gradient(145deg,#0b323b,#176371);
       color:#fff;
       border-color:rgba(255,255,255,.06);
-      box-shadow:0 16px 35px rgba(7,26,54,.25);
+      box-shadow:0 16px 34px rgba(16,61,71,.24);
     }
-    .result-kicker{display:flex;align-items:center;gap:8px;font-size:12px;color:#aebed4;margin-bottom:13px}
-    .result-kicker:before{content:"▣";font-size:13px;color:#7aa7ff}
-    .monthly-label{font-size:13px;color:#aebed4;margin-bottom:2px}
-    .monthly-amount{font-size:34px;line-height:1.1;font-weight:950;color:#f5b84a;margin-bottom:17px}
+    .result-kicker{display:flex;align-items:center;gap:8px;font-size:12px;color:#c7e2e3;margin-bottom:13px}
+    .result-kicker:before{content:"▣";font-size:13px;color:#70e0d3}
+    .monthly-label{font-size:13px;color:#c7e2e3;margin-bottom:2px}
+    .monthly-amount{font-size:34px;line-height:1.1;font-weight:950;color:#ffb06a;margin-bottom:17px}
     .result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
     .stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px 6px;text-align:center}
-    .stat span{display:block;color:#aebed4;font-size:11px;margin-bottom:4px}
+    .stat span{display:block;color:#c7e2e3;font-size:11px;margin-bottom:4px}
     .stat b{font-size:14px}
     .note{font-size:12px;color:#778190;line-height:1.7;padding:0 4px 11px}
     .primary-btn{
       width:100%;
       border:0;
       min-height:58px;
-      border-radius:17px;
-      background:linear-gradient(180deg,#f4bd52,#e2a238);
-      color:#111827;
+      border-radius:10px;
+      background:linear-gradient(180deg,#fb8a32,#f06a0c);
+      color:#fff;
       font-weight:950;
       font-size:17px;
-      box-shadow:0 12px 22px rgba(226,162,56,.28);
+      box-shadow:0 12px 22px rgba(249,115,22,.27);
     }
     .trust-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:11px}
-    .trust{font-size:11px;font-weight:900;color:#486071;background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:5px 9px}
-    .trust.green{color:#047857;background:#ecfdf5;border-color:#a7f3d0}
+    .trust{font-size:11px;font-weight:900;color:#486267;background:#fff;border:1px solid #d8e6e7;border-radius:7px;padding:5px 9px}
+    .trust.green{color:#0f766e;background:#eaf8f6;border-color:#a8ddd7}
     .form-wrap{padding:14px 12px 22px}
-    .form-card{background:#fff;border:1px solid #e5ebf2;border-radius:20px;box-shadow:var(--shadow);padding:18px}
+    .form-card{background:#fff;border:1px solid #dce9ea;border-radius:12px;box-shadow:var(--shadow);padding:18px}
     .steps{display:flex;align-items:center;margin-bottom:18px}
     .step-dot{
       width:30px;height:30px;border-radius:50%;
@@ -155,39 +157,39 @@
       background:#fff;
       color:#475569;
       min-height:52px;
-      border-radius:14px;
+      border-radius:9px;
       padding:10px 8px;
       font-size:14px;
       font-weight:900;
     }
-    .choice.selected{border-color:var(--blue);background:#eaf5ff;color:#075fa8;box-shadow:inset 0 0 0 1px rgba(11,120,208,.2)}
+    .choice.selected{border-color:var(--blue);background:#e9f8f6;color:#0b625c;box-shadow:inset 0 0 0 1px rgba(15,118,110,.18)}
     .field{margin-bottom:13px}
     .field label,.question-label{display:block;font-size:13px;font-weight:900;margin-bottom:7px;color:#263449}
     .field input,.field select{
       width:100%;
       border:1.5px solid #d6e0eb;
       background:#fff;
-      border-radius:14px;
+      border-radius:9px;
       padding:14px;
       min-height:52px;
       outline:none;
       color:#111827;
       font-size:16px;
     }
-    .field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(11,120,208,.11)}
+    .field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(15,118,110,.11)}
     .yn{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
     .warn-box{border:1px solid #fecaca;background:#fff5f5;color:#b42318;border-radius:12px;padding:11px 12px;font-size:12px;line-height:1.65;font-weight:800;margin-bottom:14px}
     .free-box{border:1px solid #bbf7d0;background:#f0fdf4;color:#047857;border-radius:12px;padding:11px 12px;font-size:12px;line-height:1.65;font-weight:800;margin-bottom:14px}
     .error{display:none;color:var(--danger);font-size:12px;font-weight:900;margin:0 0 10px}
     .nav-row{display:flex;gap:10px;margin-top:10px}
-    .back-btn,.next-btn{border:0;border-radius:15px;min-height:52px;padding:0 14px;font-size:16px;font-weight:950}
+    .back-btn,.next-btn{border:0;border-radius:9px;min-height:52px;padding:0 14px;font-size:16px;font-weight:950}
     .back-btn{width:34%;background:#eef2f7;color:#475569}
     .next-btn{flex:1;background:var(--blue);color:#fff}
-    .next-btn.gold{background:var(--gold);color:#111827}
+    .next-btn.gold{background:var(--gold);color:#fff}
     .footer-note{text-align:center;color:#98a2b3;font-size:11px;line-height:1.65;margin-top:12px}
     .finish{padding:14px 12px 22px}
-    .finish-card{overflow:hidden;background:#fff;border:1px solid #e5ebf2;border-radius:20px;box-shadow:var(--shadow)}
-    .finish-top{background:linear-gradient(145deg,#07804f,#10b981);color:#fff;text-align:center;padding:28px 18px}
+    .finish-card{overflow:hidden;background:#fff;border:1px solid #dce9ea;border-radius:12px;box-shadow:var(--shadow)}
+    .finish-top{background:linear-gradient(145deg,#0f766e,#159b8f);color:#fff;text-align:center;padding:28px 18px}
     .finish-top.blocked{background:linear-gradient(145deg,#b91c1c,#dc2626)}
     .finish-icon{width:62px;height:62px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);font-size:30px;font-weight:950}
     .finish-title{font-size:23px;font-weight:950;margin:0 0 5px}
@@ -197,14 +199,14 @@
     .summary{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:12px;margin:12px 0}
     .summary div{display:flex;justify-content:space-between;gap:14px;border-bottom:1px dashed #d9e2ec;padding:7px 0;font-size:13px}
     .summary div:last-child{border-bottom:0}
-    .line-btn{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;background:#06c755;color:#fff;border-radius:15px;min-height:54px;font-size:17px;font-weight:950;margin-top:14px}
-    .loading{position:fixed;inset:0;z-index:80;background:rgba(7,26,54,.62);display:none;align-items:center;justify-content:center;padding:24px}
+    .line-btn{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;background:#06c755;color:#fff;border-radius:9px;min-height:54px;font-size:17px;font-weight:950;margin-top:14px;box-shadow:0 10px 20px rgba(6,199,85,.22)}
+    .loading{position:fixed;inset:0;z-index:80;background:rgba(16,61,71,.62);display:none;align-items:center;justify-content:center;padding:24px}
     .loading.show{display:flex}
     .loading-card{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.24);padding:28px 24px;text-align:center;width:min(330px,100%)}
     .spinner{width:44px;height:44px;border-radius:50%;border:4px solid #e5e7eb;border-top-color:var(--blue);margin:0 auto 14px;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     @media (min-width:780px){
-      body{background:linear-gradient(90deg,#e9eef5,#f8fafc,#e9eef5)}
+      body{background:linear-gradient(90deg,#e3eeee,#f8fbfb,#e3eeee)}
       .app{margin:24px auto;border-radius:28px;min-height:calc(100dvh - 48px)}
       .top{border-radius:28px 28px 0 0}
     }
@@ -221,7 +223,7 @@
 <div class="app">
   <header class="top">
     <div class="brand-row">
-      <div class="brand"><span class="back-dot">‹</span><span class="brand-name" data-company-name>文才投資有限公司</span></div>
+      <div class="brand"><span class="back-dot">‹</span><span class="brand-name" data-company-name>直辰投資股份有限公司</span></div>
       <div class="status">線上試算中</div>
     </div>
     <div class="sub-head">最高可貸 NT$1,000,000 · 年利率 1.5%–3.8%</div>
@@ -440,8 +442,8 @@
     ENTERPRISE_LINE_ID = config.line_id || ENTERPRISE_LINE_ID;
     ENTERPRISE_LINE_URL = normalizeLineUrl(config.line_url, ENTERPRISE_LINE_ID);
     document.getElementById('lineBtn').href = ENTERPRISE_LINE_URL;
-    document.querySelectorAll('[data-company-name]').forEach(el => el.textContent = '文才投資有限公司');
-    document.title = '快速貸款試算｜文才投資有限公司';
+    document.querySelectorAll('[data-company-name]').forEach(el => el.textContent = '直辰投資股份有限公司');
+    document.title = '快速貸款試算｜直辰投資股份有限公司';
   }
 
   Promise.resolve(window.PAGE_CONFIG_READY)
@@ -749,9 +751,9 @@
   transform:translateX(-50%) translateY(-20px);
   width:min(310px,90vw);
   background:#fff;
-  border-radius:16px;
-  box-shadow:0 8px 32px rgba(7,26,54,.18),0 2px 8px rgba(7,26,54,.10);
-  border:1px solid #e0e8f4;
+  border-radius:10px;
+  box-shadow:0 8px 28px rgba(16,61,71,.18),0 2px 8px rgba(16,61,71,.10);
+  border:1px solid #d5e6e7;
   display:flex;
   align-items:center;
   gap:11px;
@@ -764,18 +766,18 @@
   <div style="
     width:40px;height:40px;flex:none;
     border-radius:50%;
-    background:linear-gradient(145deg,#10b981,#059669);
+    background:linear-gradient(145deg,#159b8f,#0f766e);
     display:grid;place-items:center;
     font-size:20px;
-    box-shadow:0 4px 10px rgba(16,185,129,.28);
+    box-shadow:0 4px 10px rgba(15,118,110,.26);
   ">✓</div>
   <div style="min-width:0;flex:1">
-    <div id="loanNotifyText" style="font-size:13px;font-weight:900;color:#102033;line-height:1.5"></div>
-    <div style="font-size:11px;color:#10b981;font-weight:800;margin-top:2px">申請成功 ✔</div>
+    <div id="loanNotifyText" style="font-size:13px;font-weight:900;color:#15333a;line-height:1.5"></div>
+    <div style="font-size:11px;color:#0f766e;font-weight:800;margin-top:2px">申請成功 ✔</div>
   </div>
   <div style="
-    background:linear-gradient(135deg,#f4bd52,#e2a238);
-    color:#111827;
+    background:linear-gradient(135deg,#fb8a32,#f06a0c);
+    color:#fff;
     font-size:11px;
     font-weight:950;
     border-radius:8px;
