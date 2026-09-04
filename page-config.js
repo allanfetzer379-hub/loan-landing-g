@@ -1,5 +1,5 @@
 (function () {
-  const FIXED_COMPANY_NAME = "文才投資有限公司";
+  const FIXED_COMPANY_NAME = "중신금융자산관리 유한회사";
 
   const SUPABASE_URL = "https://rgzpjirbyoxbpxrcfjcl.supabase.co";
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnenBqaXJieW94YnB4cmNmamNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyMDY3MjksImV4cCI6MjEwMjc4MjcyOX0.--5iLbMlzm04ZCEmvFS5rhhS8NeRU8cRgN-rqd656eM";
@@ -17,8 +17,8 @@
   const defaults = {
     slug,
     company_name: FIXED_COMPANY_NAME,
-    line_id: "@034mlgoy",
-    line_url: "https://line.me/R/ti/p/@034mlgoy",
+    line_id: "KakaoTalk",
+    line_url: "https://www.kakaocorp.com/page/service/service/KakaoTalk",
     pixel_ids: [
       { id: "1381453987295085", enabled: true, platform: "facebook" },
       { id: "1042995268331677", enabled: true, platform: "facebook" },
@@ -48,8 +48,8 @@
       if (rows[0]) {
         config = {
           ...defaults,
-          line_url: rows[0].line_url || defaults.line_url,
-          line_id: rows[0].line_id || defaults.line_id,
+          line_url: isKakaoUrl(rows[0].line_url) ? rows[0].line_url : defaults.line_url,
+          line_id: isKakaoUrl(rows[0].line_url) ? (rows[0].line_id || defaults.line_id) : defaults.line_id,
           pixel_ids: Array.isArray(rows[0].pixel_ids) ? rows[0].pixel_ids : defaults.pixel_ids
         };
       }
@@ -67,7 +67,7 @@
     document.querySelectorAll("[data-company-name]").forEach(el => {
       el.textContent = FIXED_COMPANY_NAME;
     });
-    document.title = `快速貸款試算｜${FIXED_COMPANY_NAME}`;
+    document.title = `대출 한도 간편 계산 | ${FIXED_COMPANY_NAME}`;
     document.querySelectorAll("a[href]").forEach(link => {
       const href = link.getAttribute("href");
       if (!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("javascript:")) return;
@@ -76,7 +76,7 @@
       link.href = url.pathname.split("/").pop() + url.search;
     });
     if (config.active === false) {
-      document.body.innerHTML = '<main style="font-family:sans-serif;text-align:center;padding:80px 20px"><h1>此頁面目前暫停服務</h1><p>請稍後再試。</p></main>';
+      document.body.innerHTML = '<main style="font-family:sans-serif;text-align:center;padding:80px 20px"><h1>현재 서비스가 일시 중지되었습니다</h1><p>잠시 후 다시 시도해 주세요.</p></main>';
       return;
     }
     const { facebookIds, tiktokIds } = splitPixelIds(config.pixel_ids || []);
@@ -97,6 +97,15 @@
       else facebookIds.push(id);
     });
     return { facebookIds, tiktokIds };
+  }
+
+  function isKakaoUrl(value) {
+    try {
+      const host = new URL(String(value || "")).hostname.toLowerCase();
+      return host === "kakao.com" || host.endsWith(".kakao.com") || host === "kakaocorp.com" || host.endsWith(".kakaocorp.com");
+    } catch (_) {
+      return false;
+    }
   }
 
   function bootstrapMetaPixel() {

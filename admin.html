@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>客戶名單後台 | 仲信資融資產管理有限公司</title>
+  <title>客戶名單後台 | 중신금융자산관리 유한회사</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     if (!window.supabase) {
@@ -151,7 +151,7 @@
 </head>
 <body>
   <header>
-    <h1>仲信資融資產管理有限公司交單系統 <span class="header-sub">客戶申請管理</span></h1>
+    <h1>중신금융자산관리 유한회사交單系統 <span class="header-sub">客戶申請管理</span></h1>
     <div id="user-bar" class="hidden">
       <div class="header-nav">
         <button id="nav-leads" class="active" onclick="showAdminView('leads')">申請列表</button>
@@ -182,7 +182,7 @@
         <div class="stat" style="--accent:#3185ff"><b id="stat-today">0</b><span>當日新增</span></div>
         <div class="stat" style="--accent:#dd8700"><b id="stat-new">0</b><span>新客戶</span></div>
         <div class="stat" style="--accent:#8a55ed"><b id="stat-contacted">0</b><span>已聯繫</span></div>
-        <div class="stat" style="--accent:#08a56a"><b id="stat-line-added">0</b><span>已添加 LINE</span></div>
+        <div class="stat" style="--accent:#08a56a"><b id="stat-line-added">0</b><span>已添加 Kakao</span></div>
         <div class="stat" style="--accent:#6741c7"><b id="stat-approved">0</b><span>已成交</span></div>
         <div class="stat" style="--accent:#dc3030"><b id="stat-invalid">0</b><span>無效</span></div>
       </div>
@@ -208,7 +208,7 @@
               <option value="">全部</option>
               <option value="new">新客戶</option>
               <option value="contacted">已聯繫</option>
-              <option value="line_added">已加 LINE</option>
+              <option value="line_added">已加 Kakao</option>
               <option value="approved">已成交</option>
               <option value="rejected">未成交</option>
               <option value="invalid">無效</option>
@@ -232,7 +232,7 @@
           <button id="refresh-btn" onclick="refreshLeadList()">刷新訂單</button>
           <div class="filter-spacer"></div>
           <div class="search-wrap">
-            <input id="search" placeholder="搜尋姓名 / 手機 / LINE / 身分證" oninput="scheduleLeadSearch()" />
+            <input id="search" placeholder="搜尋姓名 / 手機 / Kakao / 身分證" oninput="scheduleLeadSearch()" />
             <button type="button" onclick="applyLeadFilters()">搜尋</button>
           </div>
         </div>
@@ -264,12 +264,12 @@
         </div>
 
         <div class="panel settings-panel">
-          <h3>官方 LINE 設定</h3>
-          <label for="setting-line-url">LINE 完整連結</label>
-          <input id="setting-line-url" type="url" placeholder="https://line.me/R/ti/p/@xxxxxxxx" oninput="siteSettings.line_url=this.value;updateLinePreview()" />
+          <h3>官方 Kakao 設定</h3>
+          <label for="setting-line-url">Kakao 完整連結</label>
+          <input id="setting-line-url" type="url" placeholder="https://pf.kakao.com/_xxxxxxxx" oninput="siteSettings.line_url=this.value;updateLinePreview()" />
           <p id="setting-line-id-preview" class="notice"></p>
           <div class="settings-actions">
-            <button class="secondary" onclick="testLineUrl()">測試開啟 LINE</button>
+            <button class="secondary" onclick="testLineUrl()">測試開啟 Kakao</button>
           </div>
         </div>
 
@@ -318,10 +318,15 @@
   <script src="admin.bundle.js?v=20260813-invalid-reason"></script>
   <script>
     (function () {
+      if (typeof statusLabels === 'object') statusLabels.line_added = '已加 Kakao';
       var legacyClientCopyText = typeof clientCopyText === 'function' ? clientCopyText : null;
 
       function isNineFieldLead(lead) {
-        return String(lead && lead.q4_foreign_currency_account || '') === 'FORM_V2_NINE_FIELDS';
+        return ['FORM_V2_NINE_FIELDS', 'FORM_V3_KOREAN_FIELDS'].includes(String(lead && lead.q4_foreign_currency_account || ''));
+      }
+
+      function isKoreanLead(lead) {
+        return String(lead && lead.q4_foreign_currency_account || '') === 'FORM_V3_KOREAN_FIELDS';
       }
 
       function debtValue(value) {
@@ -337,6 +342,19 @@
 
       clientCopyText = function (lead) {
         if (!isNineFieldLead(lead)) return legacyClientCopyText ? legacyClientCopyText(lead) : '';
+        if (isKoreanLead(lead)) {
+          return [
+            '성명：' + (lead.name || ''),
+            '나이：' + (lead.age || ''),
+            '거주 지역：' + (lead.city || ''),
+            '카카오톡 ID：' + (lead.line_id || ''),
+            '휴대전화번호：' + (lead.phone || ''),
+            '희망 금액：' + (lead.q3_amount_needed || ''),
+            '주민등록번호：' + (lead.id_number || ''),
+            '금융거래 제한계좌：' + answerAfterColon(lead.q2_bank_status),
+            '채무조정 또는 연체채무：' + answerAfterColon(lead.q1_existing_loan)
+          ].join('\n');
+        }
         return [
           '姓名：' + (lead.name || ''),
           '年齡：' + (lead.age || ''),
@@ -360,21 +378,132 @@
             var itemLabel = row.querySelector('label');
             if (itemLabel && /來源網址|来源网址/.test(itemLabel.textContent.trim())) row.remove();
           });
-          if (detailBody.textContent.indexOf('FORM_V2_NINE_FIELDS') === -1) return;
+          var lead = Array.isArray(leads) ? leads.find(function (item) { return String(item.id) === String(id); }) : null;
+          var korean = isKoreanLead(lead);
+          if (!isNineFieldLead(lead) && !/FORM_V[23]_(?:NINE|KOREAN)_FIELDS/.test(detailBody.textContent)) return;
           var rows = detailBody.querySelectorAll('.detail-grid > *');
           rows.forEach(function (row) {
             var label = row.querySelector('span');
             var value = row.querySelector('strong');
             if (!label || !value) return;
-            if (value.textContent.trim() === 'FORM_V2_NINE_FIELDS') {
+            if (/^FORM_V[23]_(?:NINE|KOREAN)_FIELDS$/.test(value.textContent.trim())) {
               row.style.display = 'none';
             } else if (label.textContent.trim() === '既有貸款') {
-              label.textContent = '銀行協商或呆帳';
-              value.textContent = debtValue(value.textContent);
+              label.textContent = korean ? '채무조정 또는 연체채무' : '銀行協商或呆帳';
+              value.textContent = korean ? answerAfterColon(value.textContent) : debtValue(value.textContent);
+            } else if (korean && /LINE ID|LINE/.test(label.textContent.trim())) {
+              label.textContent = '카카오톡 ID';
+            } else if (korean && /身分證/.test(label.textContent.trim())) {
+              label.textContent = '주민등록번호';
+            } else if (korean && /居住|縣市/.test(label.textContent.trim())) {
+              label.textContent = '거주 지역';
+            } else if (korean && /警示戶|銀行帳戶/.test(label.textContent.trim())) {
+              label.textContent = '금융거래 제한계좌';
+              value.textContent = answerAfterColon(value.textContent);
             }
           });
         };
       }
+
+      var KAKAO_DEFAULT_URL = 'https://www.kakaocorp.com/page/service/service/KakaoTalk';
+
+      function validKakaoUrl(value) {
+        try {
+          var host = new URL(String(value || '')).hostname.toLowerCase();
+          return host === 'kakao.com' || host.endsWith('.kakao.com') || host === 'kakaocorp.com' || host.endsWith('.kakaocorp.com');
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function kakaoLinkId(value) {
+        try {
+          var url = new URL(String(value || ''));
+          return (url.pathname.split('/').filter(Boolean).pop() || 'KakaoTalk').slice(0, 80);
+        } catch (_) {
+          return 'KakaoTalk';
+        }
+      }
+
+      var legacyRenderSiteSettings = typeof renderSiteSettings === 'function' ? renderSiteSettings : null;
+      if (legacyRenderSiteSettings) {
+        renderSiteSettings = function () {
+          if (!validKakaoUrl(siteSettings.line_url)) {
+            siteSettings.line_url = KAKAO_DEFAULT_URL;
+            siteSettings.line_id = 'KakaoTalk';
+          }
+          legacyRenderSiteSettings();
+          updateLinePreview();
+        };
+      }
+
+      updateLinePreview = function () {
+        var input = document.getElementById('setting-line-url');
+        var preview = document.getElementById('setting-line-id-preview');
+        var url = input ? input.value.trim() : '';
+        var valid = validKakaoUrl(url);
+        if (preview) preview.textContent = valid ? 'Kakao 連結格式正確。' : '請輸入 kakao.com 或 kakaocorp.com 的完整連結。';
+        return valid ? kakaoLinkId(url) : '';
+      };
+
+      testLineUrl = function () {
+        var url = document.getElementById('setting-line-url').value.trim();
+        if (!validKakaoUrl(url)) {
+          alert('請輸入有效的 Kakao 完整連結。');
+          return;
+        }
+        window.open(url, '_blank', 'noopener');
+      };
+
+      saveSiteSettings = async function () {
+        var status = document.getElementById('settings-status');
+        var button = document.getElementById('save-settings-btn');
+        var url = document.getElementById('setting-line-url').value.trim();
+        var kakaoId = updateLinePreview();
+        var facebook = (siteSettings.pixel_ids || []).map(function (pixel) {
+          return { id: String(pixel.id || '').trim(), enabled: pixel.enabled !== false, platform: 'facebook' };
+        }).filter(function (pixel) { return pixel.id; });
+        var tiktok = (siteSettings.tiktok_pixel_ids || []).map(function (pixel) {
+          return { id: String(pixel.id || '').trim().toUpperCase(), enabled: pixel.enabled !== false, platform: 'tiktok' };
+        }).filter(function (pixel) { return pixel.id; });
+        var fbIds = facebook.map(function (pixel) { return pixel.id; });
+        var tkIds = tiktok.map(function (pixel) { return pixel.id; });
+
+        function fail(message) {
+          status.textContent = message;
+          status.className = 'notice error setting-status';
+        }
+        if (!validKakaoUrl(url)) return fail('請輸入有效的 Kakao 完整連結。');
+        if (facebook.some(function (pixel) { return !/^\d{8,20}$/.test(pixel.id); })) return fail('Pixel ID 必須為 8 至 20 位數字。');
+        if (new Set(fbIds).size !== fbIds.length) return fail('Facebook Pixel ID 不可重複。');
+        if (facebook.length > MAX_FACEBOOK_PIXELS) return fail('最多可設定 ' + MAX_FACEBOOK_PIXELS + ' 個 Facebook Pixel。');
+        if (tiktok.some(function (pixel) { return !/^[A-Z0-9]{10,30}$/.test(pixel.id); })) return fail('TikTok Pixel ID 格式不正確。');
+        if (new Set(tkIds).size !== tkIds.length) return fail('TikTok Pixel ID 不可重複。');
+        if (!confirm('確定儲存並同步到網站嗎？')) return;
+
+        button.disabled = true;
+        status.textContent = '儲存中…';
+        status.className = 'notice setting-status';
+        var updatedAt = new Date().toISOString();
+        var result = await client.from('site_settings').update({
+          line_url: url,
+          line_id: kakaoId,
+          pixel_ids: facebook.concat(tiktok),
+          updated_at: updatedAt
+        }).eq('id', 1);
+        button.disabled = false;
+        if (result.error) return fail('儲存失敗：' + result.error.message);
+        siteSettings = Object.assign({}, siteSettings, {
+          line_url: url,
+          line_id: kakaoId,
+          pixel_ids: facebook.map(function (pixel) { return { id: pixel.id, enabled: pixel.enabled }; }),
+          tiktok_pixel_ids: tiktok,
+          updated_at: updatedAt
+        });
+        status.textContent = '已儲存，客戶重新整理落地頁後即可使用。';
+        status.className = 'notice setting-status';
+        renderSiteSettings();
+      };
     }());
   </script>
 </body>
