@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>대출 한도 간편 계산 | 중신금융자산관리 유한회사</title>
   <meta name="description" content="온라인으로 필요한 대출 한도와 예상 월 상환액을 확인하고 상담을 신청하세요.">
-  <script src="page-config.js?v=20260815-pageview"></script>
+  <script src="page-config.js?v=20260907-line"></script>
   <style>
     :root{
       --navy:#103d47;
@@ -323,7 +323,7 @@
 
           <div class="panel" data-step="3">
             <h1 class="form-title">금융상태 확인</h1>
-            <p class="form-desc">아래 정보는 상담 검토용입니다. 제출 후 카카오톡에서 상담을 계속해 주세요.</p>
+            <p class="form-desc">아래 정보는 상담 검토용입니다. 제출 후 LINE에서 상담을 계속해 주세요.</p>
             <div class="warn-box">안내: 금융거래 제한계좌는 현재 신청할 수 없습니다.</div>
             <div class="free-box">✓ 상담 신청은 무료이며 숨겨진 비용이 없습니다.</div>
             <div class="question-label">금융거래 제한계좌에 해당하나요? *</div>
@@ -351,17 +351,17 @@
         <div id="finishTop" class="finish-top">
           <div id="finishIcon" class="finish-icon">✓</div>
           <h2 id="finishTitle" class="finish-title">신청 정보가 접수되었습니다</h2>
-          <div id="finishSub" class="finish-sub">카카오톡에서 상담을 계속해 주세요</div>
+          <div id="finishSub" class="finish-sub">LINE에서 상담을 계속해 주세요</div>
         </div>
         <div class="finish-body">
-          <p id="finishDesc"><b id="finishName">안녕하세요</b>. 신청 정보가 접수되었습니다. 아래 버튼을 눌러 카카오톡에서 상담을 계속해 주세요.</p>
+          <p id="finishDesc"><b id="finishName">안녕하세요</b>. 신청 정보가 접수되었습니다. 아래 버튼을 눌러 LINE에서 상담을 계속해 주세요.</p>
           <div class="summary">
             <div><span>희망 금액</span><b id="summaryAmount">확인 중</b></div>
             <div><span>대출 용도</span><b id="summaryPurpose">생활자금</b></div>
             <div><span>접수 상태</span><b>접수 완료</b></div>
           </div>
-          <a id="lineBtn" class="line-btn" href="#" target="_blank" rel="noopener">카카오톡으로 상담 계속하기</a>
-          <div id="lineHint" class="footer-note">카카오톡이 열리지 않으면 버튼을 다시 눌러 주세요.</div>
+          <a id="lineBtn" class="line-btn" href="#" target="_blank" rel="noopener">LINE으로 상담 계속하기</a>
+          <div id="lineHint" class="footer-note">LINE이 열리지 않으면 버튼을 다시 눌러 주세요.</div>
         </div>
       </div>
     </section>
@@ -380,8 +380,8 @@
 (function(){
   const SUPABASE_URL = 'https://rgzpjirbyoxbpxrcfjcl.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnenBqaXJieW94YnB4cmNmamNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyMDY3MjksImV4cCI6MjEwMjc4MjcyOX0.--5iLbMlzm04ZCEmvFS5rhhS8NeRU8cRgN-rqd656eM';
-  let ENTERPRISE_LINE_URL = 'https://www.kakaocorp.com/page/service/service/KakaoTalk';
-  let ENTERPRISE_LINE_ID = 'KakaoTalk';
+  let ENTERPRISE_LINE_URL = 'https://line.me/ti/p/GTBK9CCY9u';
+  let ENTERPRISE_LINE_ID = '';
   let currentStep = 1;
   const annualRate = 1.5;
   const state = {
@@ -434,7 +434,7 @@
     try{
       const parsed = new URL(url);
       const host = parsed.hostname.toLowerCase();
-      if(host === 'kakao.com' || host.endsWith('.kakao.com') || host === 'kakaocorp.com' || host.endsWith('.kakaocorp.com')) return url;
+      if(parsed.protocol === 'https:' && host === 'line.me') return url;
     }catch(_){ }
     return ENTERPRISE_LINE_URL;
   }
@@ -715,8 +715,8 @@
     document.getElementById('finishTop').classList.remove('blocked');
     document.getElementById('finishIcon').textContent = '✓';
     document.getElementById('finishTitle').textContent = '신청 정보가 접수되었습니다';
-    document.getElementById('finishSub').textContent = '카카오톡에서 상담을 계속해 주세요';
-    document.getElementById('finishDesc').innerHTML = '<b>' + escapeHtml(payload.name || '고객님') + '</b>, 신청 정보가 접수되었습니다. 아래 버튼을 눌러 카카오톡에서 상담을 계속해 주세요.';
+    document.getElementById('finishSub').textContent = 'LINE에서 상담을 계속해 주세요';
+    document.getElementById('finishDesc').innerHTML = '<b>' + escapeHtml(payload.name || '고객님') + '</b>, 신청 정보가 접수되었습니다. 아래 버튼을 눌러 LINE에서 상담을 계속해 주세요.';
     document.getElementById('summaryAmount').textContent = payload.q3_amount_needed || '확인 중';
     document.getElementById('summaryPurpose').textContent = state.purpose;
     document.getElementById('lineBtn').href = ENTERPRISE_LINE_URL;
@@ -744,9 +744,9 @@
 
   document.getElementById('lineBtn').addEventListener('click', () => {
     trackLineClick();
-    window.trackPageEvent?.('Contact', { content_name: 'G 카카오톡 상담' });
-    window.trackPageEvent?.('KakaoContact', { content_name: 'G 카카오톡 상담', content_category: '대출 상담' });
-    window.trackTikTokEvent?.('Contact', { content_type: 'kakao_click' });
+    window.trackPageEvent?.('Contact', { content_name: 'G LINE 상담' });
+    window.trackPageEvent?.('LineAddFriend', { content_name: 'G LINE 상담', content_category: '대출 상담' });
+    window.trackTikTokEvent?.('Contact', { content_type: 'line_click' });
   });
 
   updateCalculator();

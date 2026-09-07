@@ -17,8 +17,8 @@
   const defaults = {
     slug,
     company_name: FIXED_COMPANY_NAME,
-    line_id: "KakaoTalk",
-    line_url: "https://www.kakaocorp.com/page/service/service/KakaoTalk",
+    line_id: "",
+    line_url: "https://line.me/ti/p/GTBK9CCY9u",
     pixel_ids: [
       { id: "1381453987295085", enabled: true, platform: "facebook" },
       { id: "1042995268331677", enabled: true, platform: "facebook" },
@@ -102,7 +102,7 @@
   function isKakaoUrl(value) {
     try {
       const host = new URL(String(value || "")).hostname.toLowerCase();
-      return host === "kakao.com" || host.endsWith(".kakao.com") || host === "kakaocorp.com" || host.endsWith(".kakaocorp.com");
+      return new URL(value).protocol === "https:" && host === "line.me";
     } catch (_) {
       return false;
     }

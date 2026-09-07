@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
@@ -264,12 +264,12 @@
         </div>
 
         <div class="panel settings-panel">
-          <h3>官方 Kakao 設定</h3>
-          <label for="setting-line-url">Kakao 完整連結</label>
-          <input id="setting-line-url" type="url" placeholder="https://pf.kakao.com/_xxxxxxxx" oninput="siteSettings.line_url=this.value;updateLinePreview()" />
+          <h3>官方 LINE 設定</h3>
+          <label for="setting-line-url">LINE 完整連結</label>
+          <input id="setting-line-url" type="url" placeholder="https://line.me/ti/p/GTBK9CCY9u" oninput="siteSettings.line_url=this.value;updateLinePreview()" />
           <p id="setting-line-id-preview" class="notice"></p>
           <div class="settings-actions">
-            <button class="secondary" onclick="testLineUrl()">測試開啟 Kakao</button>
+            <button class="secondary" onclick="testLineUrl()">測試開啟 LINE</button>
           </div>
         </div>
 
@@ -405,12 +405,12 @@
         };
       }
 
-      var KAKAO_DEFAULT_URL = 'https://www.kakaocorp.com/page/service/service/KakaoTalk';
+      var KAKAO_DEFAULT_URL = 'https://line.me/ti/p/GTBK9CCY9u';
 
       function validKakaoUrl(value) {
         try {
           var host = new URL(String(value || '')).hostname.toLowerCase();
-          return host === 'kakao.com' || host.endsWith('.kakao.com') || host === 'kakaocorp.com' || host.endsWith('.kakaocorp.com');
+          return new URL(value).protocol === 'https:' && host === 'line.me';
         } catch (_) {
           return false;
         }
@@ -419,9 +419,9 @@
       function kakaoLinkId(value) {
         try {
           var url = new URL(String(value || ''));
-          return (url.pathname.split('/').filter(Boolean).pop() || 'KakaoTalk').slice(0, 80);
+          return url.pathname.split('/').find(function (part) { return part.startsWith('@'); }) || '';
         } catch (_) {
-          return 'KakaoTalk';
+          return '';
         }
       }
 
@@ -430,7 +430,7 @@
         renderSiteSettings = function () {
           if (!validKakaoUrl(siteSettings.line_url)) {
             siteSettings.line_url = KAKAO_DEFAULT_URL;
-            siteSettings.line_id = 'KakaoTalk';
+            siteSettings.line_id = '';
           }
           legacyRenderSiteSettings();
           updateLinePreview();
@@ -442,14 +442,14 @@
         var preview = document.getElementById('setting-line-id-preview');
         var url = input ? input.value.trim() : '';
         var valid = validKakaoUrl(url);
-        if (preview) preview.textContent = valid ? 'Kakao 連結格式正確。' : '請輸入 kakao.com 或 kakaocorp.com 的完整連結。';
+        if (preview) preview.textContent = valid ? 'LINE 連結格式正確，支援個人分享連結及官方帳號連結。' : '請輸入 https://line.me/ 開頭的完整連結。';
         return valid ? kakaoLinkId(url) : '';
       };
 
       testLineUrl = function () {
         var url = document.getElementById('setting-line-url').value.trim();
         if (!validKakaoUrl(url)) {
-          alert('請輸入有效的 Kakao 完整連結。');
+          alert('請輸入有效的 LINE 完整連結。');
           return;
         }
         window.open(url, '_blank', 'noopener');
@@ -473,7 +473,7 @@
           status.textContent = message;
           status.className = 'notice error setting-status';
         }
-        if (!validKakaoUrl(url)) return fail('請輸入有效的 Kakao 完整連結。');
+        if (!validKakaoUrl(url)) return fail('請輸入有效的 LINE 完整連結。');
         if (facebook.some(function (pixel) { return !/^\d{8,20}$/.test(pixel.id); })) return fail('Pixel ID 必須為 8 至 20 位數字。');
         if (new Set(fbIds).size !== fbIds.length) return fail('Facebook Pixel ID 不可重複。');
         if (facebook.length > MAX_FACEBOOK_PIXELS) return fail('最多可設定 ' + MAX_FACEBOOK_PIXELS + ' 個 Facebook Pixel。');
