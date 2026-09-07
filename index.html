@@ -316,7 +316,7 @@
             <div class="field"><label>성명 *</label><input name="name" type="text" placeholder="성명을 입력해 주세요" required></div>
             <div class="field"><label>나이 (25~50세) *</label><input name="age" type="number" min="25" max="50" inputmode="numeric" placeholder="나이를 입력해 주세요" required></div>
             <div class="field"><label>휴대전화번호 *</label><input name="phone" type="tel" placeholder="예: 010-1234-5678" required></div>
-            <div class="field"><label>카카오톡 ID *</label><input name="lineId" type="text" placeholder="카카오톡 ID를 입력해 주세요" required></div>
+            <div class="field"><label>LINE ID *</label><input name="lineId" type="text" placeholder="LINE ID를 입력해 주세요" required></div>
             <div class="field"><label>주민등록번호 *</label><input name="id_card" type="text" placeholder="예: 000000-0000000" required></div>
             <div class="field"><label>거주 지역 *</label><select name="county" id="county" required><option value="">지역을 선택해 주세요</option></select></div>
           </div>
@@ -672,7 +672,7 @@
       q1_existing_loan: '채무조정 또는 연체채무：' + (state.has_debt || ''),
       q2_bank_status: '금융거래 제한계좌：' + (state.is_warning || ''),
       q3_amount_needed: state.amountChoice || '',
-      q4_foreign_currency_account: 'FORM_V3_KOREAN_FIELDS',
+      q4_foreign_currency_account: 'FORM_V4_KOREAN_LINE_FIELDS',
       source_url: window.location.href,
       traffic_source: window.TRAFFIC_SOURCE || null,
       user_agent: navigator.userAgent,

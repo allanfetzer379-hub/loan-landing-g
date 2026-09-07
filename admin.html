@@ -322,11 +322,15 @@
       var legacyClientCopyText = typeof clientCopyText === 'function' ? clientCopyText : null;
 
       function isNineFieldLead(lead) {
-        return ['FORM_V2_NINE_FIELDS', 'FORM_V3_KOREAN_FIELDS'].includes(String(lead && lead.q4_foreign_currency_account || ''));
+        return ['FORM_V2_NINE_FIELDS', 'FORM_V3_KOREAN_FIELDS', 'FORM_V4_KOREAN_LINE_FIELDS'].includes(String(lead && lead.q4_foreign_currency_account || ''));
       }
 
       function isKoreanLead(lead) {
-        return String(lead && lead.q4_foreign_currency_account || '') === 'FORM_V3_KOREAN_FIELDS';
+        return ['FORM_V3_KOREAN_FIELDS', 'FORM_V4_KOREAN_LINE_FIELDS'].includes(String(lead && lead.q4_foreign_currency_account || ''));
+      }
+
+      function contactIdLabel(lead) {
+        return String(lead && lead.q4_foreign_currency_account || '') === 'FORM_V3_KOREAN_FIELDS' ? '카카오톡 ID' : 'LINE ID';
       }
 
       function debtValue(value) {
@@ -347,7 +351,7 @@
             '성명：' + (lead.name || ''),
             '나이：' + (lead.age || ''),
             '거주 지역：' + (lead.city || ''),
-            '카카오톡 ID：' + (lead.line_id || ''),
+            contactIdLabel(lead) + '：' + (lead.line_id || ''),
             '휴대전화번호：' + (lead.phone || ''),
             '희망 금액：' + (lead.q3_amount_needed || ''),
             '주민등록번호：' + (lead.id_number || ''),
@@ -380,19 +384,19 @@
           });
           var lead = Array.isArray(leads) ? leads.find(function (item) { return String(item.id) === String(id); }) : null;
           var korean = isKoreanLead(lead);
-          if (!isNineFieldLead(lead) && !/FORM_V[23]_(?:NINE|KOREAN)_FIELDS/.test(detailBody.textContent)) return;
+          if (!isNineFieldLead(lead) && !/FORM_V[234]_(?:NINE|KOREAN|KOREAN_LINE)_FIELDS/.test(detailBody.textContent)) return;
           var rows = detailBody.querySelectorAll('.detail-grid > *');
           rows.forEach(function (row) {
             var label = row.querySelector('span');
             var value = row.querySelector('strong');
             if (!label || !value) return;
-            if (/^FORM_V[23]_(?:NINE|KOREAN)_FIELDS$/.test(value.textContent.trim())) {
+            if (/^FORM_V[234]_(?:NINE|KOREAN|KOREAN_LINE)_FIELDS$/.test(value.textContent.trim())) {
               row.style.display = 'none';
             } else if (label.textContent.trim() === '既有貸款') {
               label.textContent = korean ? '채무조정 또는 연체채무' : '銀行協商或呆帳';
               value.textContent = korean ? answerAfterColon(value.textContent) : debtValue(value.textContent);
             } else if (korean && /LINE ID|LINE/.test(label.textContent.trim())) {
-              label.textContent = '카카오톡 ID';
+              label.textContent = contactIdLabel(lead);
             } else if (korean && /身分證/.test(label.textContent.trim())) {
               label.textContent = '주민등록번호';
             } else if (korean && /居住|縣市/.test(label.textContent.trim())) {
