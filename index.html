@@ -314,6 +314,7 @@
             <h1 class="form-title">기본정보 입력</h1>
             <p class="form-desc">모든 항목을 입력해 주세요. 주민등록번호와 휴대전화번호는 형식을 검사하지 않습니다.</p>
             <div class="field"><label>성명 *</label><input name="name" type="text" placeholder="성명을 입력해 주세요" required></div>
+            <div class="field"><label for="gender">성별 *</label><select id="gender" name="gender" required><option value="">성별을 선택해 주세요</option><option value="male">남성</option><option value="female">여성</option></select></div>
             <div class="field"><label>나이 (25~50세) *</label><input name="age" type="number" min="25" max="50" inputmode="numeric" placeholder="나이를 입력해 주세요" required></div>
             <div class="field"><label>휴대전화번호 *</label><input name="phone" type="tel" placeholder="예: 010-1234-5678" required></div>
             <div class="field"><label>LINE ID *</label><input name="lineId" type="text" placeholder="LINE ID를 입력해 주세요" required></div>
@@ -624,7 +625,7 @@
       return true;
     }
     if(currentStep === 2){
-      const required = ['name','age','phone','lineId','id_card','county'];
+      const required = ['name','gender','age','phone','lineId','id_card','county'];
       for(const name of required){
         const input = form.elements[name];
         if(!String(input.value || '').trim()){
@@ -664,6 +665,7 @@
     const payload = {
       id: leadId,
       name: String(data.name || '').trim(),
+      gender: data.gender,
       age: data.age ? Number(data.age) : null,
       city: data.county || '',
       id_number: String(data.id_card || '').trim().toUpperCase(),
