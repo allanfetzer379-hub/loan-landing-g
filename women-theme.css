@@ -1,0 +1,52 @@
+:root {
+  --navy: #823450;
+  --navy2: #9d3b61;
+  --blue: #ac365e;
+  --gold: #ac365e;
+  --gold2: #c04975;
+  --ink: #352b30;
+  --muted: #74656d;
+  --line: #eddce3;
+  --soft: #fff4f7;
+  --shadow: 0 8px 24px rgba(107, 45, 68, .08);
+}
+body { background: linear-gradient(150deg, #fce5ed 0%, #fff 70%); }
+.app { background: linear-gradient(180deg, #fff0f5, #fff 850px); box-shadow: 0 0 0 1px #efdee5; }
+.top { background: #fff; color: var(--ink); border-bottom: 2px solid #ecc0d0; box-shadow: 0 3px 14px #6831480a; }
+.brand-row { gap: 8px; align-items: flex-start; }
+.brand-name { font-size: 14px; white-space: normal; overflow: visible; overflow-wrap: anywhere; line-height: 1.5; }
+.back-dot { background: #f9e7ee; color: #913b5b; }
+.status { color: #66535b; padding-top: 4px; }
+.sub-head { color: #74656d; margin-left: 0; line-height: 1.6; font-size: 11px; }
+.women-hero { position: relative; aspect-ratio: 3 / 2; overflow: hidden; }
+.women-hero img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.women-hero h1 { position: absolute; top: 18px; left: 18px; margin: 0; color: #712947; font-size: 28px; font-weight: 900; line-height: 1.3; letter-spacing: 0; text-shadow: 0 1px 8px #ffffffa6; }
+.image-disclaimer { position: absolute; right: 8px; bottom: 8px; font-size: 10px; color: #46333c; background: #fffffff0; padding: 3px 5px; }
+.card,.form-card,.finish-card { border-color: var(--line); border-radius: 8px; box-shadow: var(--shadow); }
+.label,.section-label { color: var(--ink); }
+.amount-display { letter-spacing: 0; }
+.option { background: #fff8fa; border-color: #e8d4dc; color: #6a505d; }
+.option.selected { background: var(--navy); border-color: var(--navy); color: #fff; box-shadow: 0 4px 10px #82345020; }
+.result-card { background: #fff; color: var(--ink); border-top: 3px solid var(--blue); }
+.result-kicker,.monthly-label,.stat span { color: #74656d; }
+.result-kicker:before { color: var(--blue); }
+.monthly-amount { color: #943450; }
+.stat { background: #fff5f8; border-color: #f0dce4; border-radius: 8px; }
+.primary-btn { background: #ac365e; box-shadow: 0 8px 18px #ac365e30; }
+.primary-btn:hover,.next-btn:hover { background: #912849; }
+.trust { color: #725363; border-color: #ecd8e0; }
+.choice.selected { border-color: var(--blue); background: #fff0f5; color: #87324f; box-shadow: inset 0 0 0 1px #ac365e24; }
+.field input:focus,.field select:focus { box-shadow: 0 0 0 3px #ac365e18; }
+.finish-top:not(.blocked) { background: #943d5c; }
+.line-btn { background: #06c755; color: #073b1b; box-shadow: 0 8px 18px #06c75526; }
+.loading { background: #42273399; }
+.note,.footer-note,.range-scale { color: #75636d; }
+#loanNotify { border-color: #ecd8e0 !important; box-shadow: 0 6px 24px #71344d20 !important; }
+#loanNotifyAmount { background: #ac365e !important; }
+@media (min-width:780px) {
+  body { background: linear-gradient(135deg, #fce5ed, #fff 65%); }
+}
+@media (max-width:370px) {
+  .women-hero h1 { font-size: 25px; left: 14px; top: 14px; }
+  .brand-name { font-size: 13px; }
+}
